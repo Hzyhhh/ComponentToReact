@@ -14,7 +14,7 @@ const data = [
     errorMessage: "请输入工号",
     required: true,
     type: "int",
-    value: 100
+    value: 100,
   },
   {
     field: "date",
@@ -22,7 +22,7 @@ const data = [
     errorMessage: "请输入日期",
     required: false,
     type: "date",
-    value: moment("2017-10-20")
+    value: moment("2017-10-20"),
   },
   {
     field: "username",
@@ -30,7 +30,7 @@ const data = [
     errorMessage: "请输入用户名",
     required: true,
     type: "char",
-    value: "hello world"
+    value: "hello world",
   },
   {
     field: "customer",
@@ -39,20 +39,20 @@ const data = [
     required: true,
     type: "select",
     value: "中兴",
-    options: ["贝尔", "中兴", "烽火"]
-  }
+    options: ["贝尔", "中兴", "烽火"],
+  },
 ];
 
 // formItem css 样式
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
-    sm: { span: 6 }
+    sm: { span: 6 },
   },
   wrapperCol: {
     xs: { span: 24 },
-    sm: { span: 14 }
-  }
+    sm: { span: 14 },
+  },
 };
 
 // 保存按钮 css 样式
@@ -60,13 +60,13 @@ const tailFormItemLayout = {
   wrapperCol: {
     xs: {
       span: 24,
-      offset: 0
+      offset: 0,
     },
     sm: {
       span: 14,
-      offset: 6
-    }
-  }
+      offset: 6,
+    },
+  },
 };
 
 // form css 样式
@@ -74,10 +74,10 @@ const formLayout = {
   width: 400,
   marginTop: 100,
   marginLeft: "auto",
-  marginRight: "auto"
+  marginRight: "auto",
 };
 
-const App: FC<FormComponentProps> = props => {
+const App: FC<FormComponentProps> = (props) => {
   const handleSubmit = (e: React.SyntheticEvent<EventTarget>) => {
     e.preventDefault();
     props.form.validateFields((err, values) => {
@@ -104,13 +104,15 @@ const App: FC<FormComponentProps> = props => {
       case "select":
         return (
           <Select>
-            {item.options.map((option: string | number | undefined, index: number) => {
-              return (
-                <Option key={index} value={option}>
-                  {option}
-                </Option>
-              );
-            })}
+            {item.options.map(
+              (option: string | number | undefined, index: number) => {
+                return (
+                  <Option key={index} value={option}>
+                    {option}
+                  </Option>
+                );
+              }
+            )}
           </Select>
         );
       default:
@@ -119,9 +121,9 @@ const App: FC<FormComponentProps> = props => {
   };
 
   const {
-    form: { getFieldDecorator }
+    form: { getFieldDecorator },
   } = props;
-  
+
   return (
     <Form onSubmit={handleSubmit} style={formLayout}>
       {data.map((item, index) => {
@@ -140,9 +142,9 @@ const App: FC<FormComponentProps> = props => {
               rules: [
                 {
                   required: item.required,
-                  message: item.errorMessage
-                }
-              ]
+                  message: item.errorMessage,
+                },
+              ],
             })(switchItem(item))}
           </FormItem>
         );
@@ -155,6 +157,4 @@ const App: FC<FormComponentProps> = props => {
     </Form>
   );
 };
-export const AppForm = Form.create()(App);
-
-export default AppForm
+export default Form.create()(App);
