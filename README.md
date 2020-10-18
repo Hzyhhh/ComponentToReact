@@ -7,5 +7,5 @@
 3. 上附文章的demo运行不起来...
 
 项目运行流程:
-- yarn
-- yarn start
+- yarn / npm
+- yarn start / npm start
