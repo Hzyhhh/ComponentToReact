@@ -77,7 +77,44 @@ const formLayout = {
   marginRight: "auto",
 };
 
+/**
+ * 根据后台返回的 data 中 type 类型生成不同的组件
+ * @param item  json
+ * @param Component
+ */
+const switchItem = (item: any) => {
+  const type = item.type;
+  switch (type) {
+    case "int":
+      return <InputNumber style={{ width: "100%" }} />;
+    case "char":
+      return <Input />;
+    case "date":
+      return <DatePicker style={{ width: "100%" }} />;
+    case "select":
+      return (
+        <Select>
+          {item.options.map(
+            (option: string | number | undefined, index: number) => {
+              return (
+                <Option key={index} value={option}>
+                  {option}
+                </Option>
+              );
+            }
+          )}
+        </Select>
+      );
+    default:
+      return <Input />;
+  }
+};
+
 const App: FC<FormComponentProps> = (props) => {
+  const {
+    form: { getFieldDecorator },
+  } = props;
+  
   const handleSubmit = (e: React.SyntheticEvent<EventTarget>) => {
     e.preventDefault();
     props.form.validateFields((err, values) => {
@@ -86,43 +123,6 @@ const App: FC<FormComponentProps> = (props) => {
       }
     });
   };
-
-  /**
-   * 根据后台返回的 data 中 type 类型生成不同的组件
-   * @param item  json
-   * @param Component
-   */
-  const switchItem = (item: any) => {
-    const type = item.type;
-    switch (type) {
-      case "int":
-        return <InputNumber style={{ width: "100%" }} />;
-      case "char":
-        return <Input />;
-      case "date":
-        return <DatePicker style={{ width: "100%" }} />;
-      case "select":
-        return (
-          <Select>
-            {item.options.map(
-              (option: string | number | undefined, index: number) => {
-                return (
-                  <Option key={index} value={option}>
-                    {option}
-                  </Option>
-                );
-              }
-            )}
-          </Select>
-        );
-      default:
-        return <Input />;
-    }
-  };
-
-  const {
-    form: { getFieldDecorator },
-  } = props;
 
   return (
     <Form onSubmit={handleSubmit} style={formLayout}>
