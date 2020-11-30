@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { Form, InputNumber, Input, DatePicker, Button, Select } from "antd";
-import { FormComponentProps } from "antd/lib/form";
 import moment from "moment";
 
 const FormItem = Form.Item;
@@ -71,10 +70,8 @@ const tailFormItemLayout = {
 
 // form css 样式
 const formLayout = {
-  width: 400,
   marginTop: 100,
-  marginLeft: "auto",
-  marginRight: "auto",
+  width: "100%",
 };
 
 /**
@@ -94,15 +91,13 @@ const switchItem = (item: any) => {
     case "select":
       return (
         <Select>
-          {item.options.map(
-            (option: string | number | undefined, index: number) => {
-              return (
-                <Option key={index} value={option}>
-                  {option}
-                </Option>
-              );
-            }
-          )}
+          {item.options.map((option: string, index: number) => {
+            return (
+              <Option key={index} value={index}>
+                {option}
+              </Option>
+            );
+          })}
         </Select>
       );
     default:
@@ -110,42 +105,43 @@ const switchItem = (item: any) => {
   }
 };
 
-const App: FC<FormComponentProps> = (props) => {
-  const {
-    form: { getFieldDecorator },
-  } = props;
-  
-  const handleSubmit = (e: React.SyntheticEvent<EventTarget>) => {
-    e.preventDefault();
-    props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log("Received values of form: ", values);
-      }
-    });
+const App: FC = (props) => {
+  const handleSubmit = (values: React.SyntheticEvent<EventTarget, Event>) => {
+    console.log("Received values of form: ", values);
+  };
+
+  const handleFailed = (e: any) => {
+    console.log(e);
   };
 
   return (
-    <Form onSubmit={handleSubmit} style={formLayout}>
+    <Form
+      layout="horizontal"
+      name="basic"
+      onFinish={handleSubmit}
+      onFinishFailed={handleFailed}
+      style={formLayout}
+      {...formItemLayout}
+    >
       {data.map((item, index) => {
         // type 为 date 日期格式需要强制转化为 moment 格式
         item.value =
           item.type === "date" ? moment(item.value, "YYYY-MM-DD") : item.value;
         return (
           <FormItem
-            key={index}
-            {...formItemLayout}
+            key={item.field}
+            name={item.field}
+            initialValue={item.value}
             label={item.text}
             hasFeedback
+            rules={[
+              {
+                required: item.required,
+                message: item.errorMessage,
+              },
+            ]}
           >
-            {getFieldDecorator(item.field, {
-              initialValue: item.value,
-              rules: [
-                {
-                  required: item.required,
-                  message: item.errorMessage,
-                },
-              ],
-            })(switchItem(item))}
+            {switchItem(item)}
           </FormItem>
         );
       })}
@@ -157,4 +153,4 @@ const App: FC<FormComponentProps> = (props) => {
     </Form>
   );
 };
-export default Form.create()(App);
+export default App;
