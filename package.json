@@ -9,7 +9,7 @@
   "private": true,
   "dependencies": {
     "antd": "^3.8.4",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-scripts": "3.0.1",
